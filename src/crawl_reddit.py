@@ -1,104 +1,168 @@
-import praw
+"""
+This program collects reddit posts per user(author) or per subreddit
+Xinru Yan Sep 2018
+
+Usage:
+    To collect posts by user:
+        python crawl_reddit.py -l 1000 -a 'miss_shelleh'
+    To coleect posts by subreddit:
+        python crawl_reddit.py -l 1000 -s 'MakeupAddiction'
+"""
 from psaw import PushshiftAPI
-import pandas as pd
-import datetime
-import sys
 import json
 import os
+# prograss bar
 from tqdm import tqdm
+# command line interface
 import click
 import config
 
 
-reddit = praw.Reddit(client_id = config.client_id,
-					 client_secret = config.client_secret,
-					 user_agent = config.user_agent,
-					 user_name = config.user_name,
-					 password = config.password)
-
-# subreddit = reddit.subreddit(sys.argv[1])
-# params = {'sort':'new', 'limit':None, 'syntax':'cloudsearch'}
-
 api = PushshiftAPI()
 
 
-# def do_search(begin_time):
-# 	return subreddit.search('timestamp:{0}..{1}'.format(int((time_now - datetime.timedelta(days=365)).timestamp()),int(time_now.timestamp())),**params)
+class Data:
+    def __init__(self, root=config.data_location):
+        self.root = root
+
+        if not os.path.exists(self.root):
+            os.mkdir(self.root)
+
+        for i in ['users', 'posts', 'subreddits']:
+            if not os.path.exists(os.path.join(self.root, i)):
+                os.mkdir(os.path.join(self.root, i))
+
+    def get_newest_time(self, author=None, subreddit=None):
+        assert (author or subreddit) and not (author and subreddit)
+
+        path = ''
+        if author:
+            path = os.path.join(self.root, 'users', author + '.json')
+        if subreddit:
+            path = os.path.join(self.root, 'subreddits', subreddit + '.json')
+
+        if os.path.exists(path):
+            with open(path, 'r') as fp:
+                return json.load(fp)['newest_time']
+        return 0
+
+    def set_newest_time(self, newest_time, author=None, subreddit=None):
+        assert (author or subreddit) and not (author and subreddit)
+
+        path = ''
+        if author:
+            path = os.path.join(self.root, 'users', author + '.json')
+        if subreddit:
+            path = os.path.join(self.root, 'subreddits', subreddit + '.json')
+
+        if os.path.exists(path):
+            with open(path, 'r') as fp:
+                obj = json.load(fp)
+        else:
+            obj = {}
+
+        obj['newest_time'] = newest_time
+        with open(path, 'w') as fp:
+            json.dump(obj, fp)
+
+    def add_posts(self, posts, author=None, subreddit=None):
+        assert (author or subreddit) and not (author and subreddit)
+
+        # Save posts
+        for post in posts:
+            path = os.path.join(self.root, 'posts', post['id'] + '.json')
+            with open(path, 'w') as fp:
+                json.dump(post, fp)
+
+        # Update post lists
+        path = ''
+        if author:
+            path = os.path.join(self.root, 'users', author + '.json')
+        if subreddit:
+            path = os.path.join(self.root, 'subreddits', subreddit + '.json')
+
+        if os.path.exists(path):
+            with open(path, 'r') as fp:
+                obj = json.load(fp)
+        else:
+            obj = {'posts': []}
+
+        obj['posts'] += [post['id'] for post in posts]
+        with open(path, 'w') as fp:
+            json.dump(obj, fp)
 
 
-# def find_posts(subreddit):
-# 	time_now = datetime.datetime.now()
-# 	print(time_now)
-# 	posts = []
-# 	for n in range(5):
-# 		for submission in do_search(time_now):
-# 			posts.append(submission.selftext)
-# 			print(submission.selftext)
-# 			time_now = submission.created_utc
-# 			print(time_now)
-# 			n -= 1
-# 	return posts
+class PostFinder:
+    def __init__(self, limit, start, author=None, subreddit=None):
+        self.limit = limit
+        self.start = start
+        self.author = author
+        self.subreddit = subreddit
+        self.result = iter([])
+
+    def __call__(self):
+        args = {'sort': 'asc',
+                'sort_type': 'created_utc',
+                'after': self.start,
+                'limit': self.limit}
+        if self.author:
+            args['author'] = self.author
+        if self.subreddit:
+            args['subreddit'] = self.subreddit
+
+        self.result = api.search_submissions(**args)
+
+        return self
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return next(self.result)
+
+    def __len__(self):
+        return self.limit
 
 
-def find_posts(start, limit):
-	return api.search_submissions(author='spd158', sort='asc', sort_type='created_utc', after=start, limit=limit)
+def grab_more_posts(find_posts):
+    posts = []
+    newest_time = 0
+
+    for post in tqdm(find_posts()):
+        posts += [post.d_]
+        if post.created_utc > newest_time:
+            newest_time = post.created_utc
+
+    return posts, newest_time
 
 
-def grab_more_posts(limit, db_filepath='spd158.json'):
-	# Load posts we already have if we have any
-	data = {'posts': {},
-	        'newest_time': 0}
-	if os.path.exists(db_filepath):
-		with open(db_filepath, 'r') as fp:
-			data = json.load(fp)
-	posts = data['posts']
-	newest_time = data['newest_time']
+def pull_posts(limit, authors=None, subreddits=None):
+    if authors is None:
+        authors = []
+    if subreddits is None:
+        subreddits = []
 
-	# get some more and add them to the list/dict of posts we already have
-	for post in tqdm(find_posts(newest_time, limit), total=limit):
-		posts[post.id] = post.d_
-		if post.created_utc > newest_time:
-			newest_time = post.created_utc
-	
+    data = Data()
 
-	# Save all the posts
-	data['posts'] = posts
-	data['newest_time'] = newest_time
-	with open(db_filepath, 'w') as fp:
-		json.dump(data, fp)
+    for author in authors:
+        posts, newest_time = grab_more_posts(PostFinder(limit, start=data.get_newest_time(author=author), author=author))
+        data.add_posts(posts, author=author)
+        data.set_newest_time(newest_time, author=author)
+
+    for subreddit in subreddits:
+        posts, newest_time = grab_more_posts(PostFinder(limit, start=data.get_newest_time(subreddit=subreddit), subreddit=subreddit))
+        data.add_posts(posts, subreddit=subreddit)
+        data.set_newest_time(newest_time, subreddit=subreddit)
+
 
 @click.command()
-@click.argument('limit', type=int, default=1000)
-def main(limit):
-	grab_more_posts(limit)
-	# find_posts(subreddit)
+@click.option('-l', '--limit', type=int, default=1000)
+@click.option('-a', '--author', 'authors', type=str, multiple=True)
+@click.option('-s', '--subreddit', 'subreddits', type=str, multiple=True)
+def main(limit, authors, subreddits):
+    pull_posts(limit, authors, subreddits)
+
 
 if __name__ == '__main__':
-	main()
-		
-
-#+MakeupAddiction+AustralianMakeup+PaleMUA+AisanBeauty+MakeupAddictionCanada+Makeup+MUAontheCheap+MakeupAddicts+BeautyGuruChatter+HighEndMakeup
-
-#personal = subreddit.search('flair:Personal')
-
-# topics_dict = { 'user':[],
-# 				'title':[], 
-#                 'upvote_ratio':[], 
-#                 'comms_num': [], 
-#                 'body':[]} 
-#                 #'comments':[]}
-
-# for submission in subreddit.search('Estee Lauder', sort='new', limit=None, syntax='cloudsearch'):
-# 	topics_dict['user'].append(submission.author)
-# 	topics_dict['title'].append(submission.title)
-# 	topics_dict['upvote_ratio'].append(submission.upvote_ratio)
-# 	topics_dict['comms_num'].append(submission.num_comments)
-# 	topics_dict['body'].append(submission.selftext)
-# 	print(submission.selftext.replace('\n', ' '))
-# 	#topics_dict['comments'].append([comment.body for comment in submission.comments])
-
-# topics_data = pd.DataFrame(topics_dict)
-# topics_data.to_csv('MakeupAddictionTry.csv', index=False) 
-
-
+    main()
 
