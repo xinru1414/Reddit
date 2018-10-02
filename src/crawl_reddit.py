@@ -1,12 +1,22 @@
 """
+Xinru Yan
+Sep 2018
+
 This program collects reddit posts per user(author) or per subreddit
-Xinru Yan Sep 2018
+Data location:
+    ../data/posts
+    ../data/users
+    ../data/subreddits
 
 Usage:
-    To collect posts by user:
-        python crawl_reddit.py -l 1000 -a 'miss_shelleh'
-    To coleect posts by subreddit:
-        python crawl_reddit.py -l 1000 -s 'MakeupAddiction'
+    To collect posts by one user:
+        python crawl_reddit.py -l 1000 -a USER_NAME
+    To collect posts by multiple users:
+        python crawl_reddit.py -l 1000 -a USER_NAME -a USERNAME
+    To collect posts by subreddit:
+        python crawl_reddit.py -l 1000 -s SUBR_NAME
+    TO collect posts by multiple subreddits:
+        python craw_reddit.py -l 1000 -s SUBR_NAME -s SUBR_NAME
 """
 from psaw import PushshiftAPI
 import json
@@ -15,6 +25,7 @@ import os
 from tqdm import tqdm
 # command line interface
 import click
+# import your own config file, see example_config.py
 import config
 
 
@@ -159,6 +170,7 @@ def pull_posts(limit, authors=None, subreddits=None):
 @click.option('-l', '--limit', type=int, default=1000)
 @click.option('-a', '--author', 'authors', type=str, multiple=True)
 @click.option('-s', '--subreddit', 'subreddits', type=str, multiple=True)
+
 def main(limit, authors, subreddits):
     pull_posts(limit, authors, subreddits)
 
