@@ -26,12 +26,12 @@ def main():
         with open(f'../tmp/{user.name}.txt', 'w') as fp:
             count = 0
             for post in user.posts:
-                if 'title' and 'selftext' in post:
+                if 'title' in post and 'selftext' in post and post['selftext']:
                     count += 1
-                    fp.write(post['subreddit'] + '\n')
+                    fp.write(post.get('subreddit') + '\n')
                     fp.write(time.ctime(post['created_utc']) + '\n')
-                    fp.write(post['title'] + '\n')
-                    fp.write(post['selftext'].replace('\n', ' ') + '\n')
+                    fp.write(post.get('title') + '\n')
+                    fp.write(post.get('selftext').replace('\n', ' ') )
                     fp.write('\n\n')
             fp.write(str(count))
 

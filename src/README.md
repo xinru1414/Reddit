@@ -4,8 +4,6 @@ python version:
 
 dependencies:
     
-    pip install click
-    
-    pip install psaw
+    see Pipfile
     
     

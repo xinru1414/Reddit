@@ -16,7 +16,11 @@ reddit database dir (.json), will be generated on your local machine
 
 ## tmp
 
-human readable databse dir (.txt), will be generated on your local machine
+human readable databse dir (.txt), 
+
+    mkdir tmp 
+
+under Reddit dir, data will be generated on your local machine
 
 
 
