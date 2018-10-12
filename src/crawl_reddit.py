@@ -27,6 +27,7 @@ from tqdm import tqdm
 import click
 # import your own config file, see example_config.py
 import config
+import time
 
 
 api = PushshiftAPI()
@@ -137,7 +138,7 @@ class PostFinder:
 
 def grab_more_posts(find_posts):
     posts = []
-    newest_time = 0
+    newest_time = find_posts.start
 
     for post in tqdm(find_posts()):
         posts += [post.d_]
@@ -147,7 +148,7 @@ def grab_more_posts(find_posts):
     return posts, newest_time
 
 
-def pull_posts(limit, authors=None, subreddits=None):
+def pull_posts(limit, authors=None, subreddits=None, verbose=True):
     if authors is None:
         authors = []
     if subreddits is None:
@@ -159,20 +160,21 @@ def pull_posts(limit, authors=None, subreddits=None):
         posts, newest_time = grab_more_posts(PostFinder(limit, start=data.get_newest_time(author=author), author=author))
         data.add_posts(posts, author=author)
         data.set_newest_time(newest_time, author=author)
+        print(f'Last post pulled for author "{author}" was posted on {time.ctime(newest_time)}')
 
     for subreddit in subreddits:
         posts, newest_time = grab_more_posts(PostFinder(limit, start=data.get_newest_time(subreddit=subreddit), subreddit=subreddit))
         data.add_posts(posts, subreddit=subreddit)
         data.set_newest_time(newest_time, subreddit=subreddit)
+        print(f'Last post pulled for subreddit "{subreddit}" was posted on {time.ctime(newest_time)}')
 
 
 @click.command()
 @click.option('-l', '--limit', type=int, default=1000)
 @click.option('-a', '--author', 'authors', type=str, multiple=True)
 @click.option('-s', '--subreddit', 'subreddits', type=str, multiple=True)
-
 def main(limit, authors, subreddits):
-    pull_posts(limit, authors, subreddits)
+    pull_posts(limit, authors, subreddits, verbose=True)
 
 
 if __name__ == '__main__':

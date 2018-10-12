@@ -14,6 +14,6 @@ class User:
     def posts(self):
         with open(self.path, 'r') as fp:
             posts = json.load(fp)['posts']
-        return (Post.load_post(self.db_root, post_id) for post_id in posts)
+        return (Post.load_post(post_id, self.db_root) for post_id in posts)
 
 

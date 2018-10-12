@@ -12,6 +12,7 @@ Usage:
 """
 from reddit import Reddit
 import config
+import time
 import click
 
 
@@ -28,6 +29,7 @@ def main():
                 if 'title' and 'selftext' in post:
                     count += 1
                     fp.write(post['subreddit'] + '\n')
+                    fp.write(time.ctime(post['created_utc']) + '\n')
                     fp.write(post['title'] + '\n')
                     fp.write(post['selftext'].replace('\n', ' ') + '\n')
                     fp.write('\n\n')

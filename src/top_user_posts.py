@@ -1,6 +1,6 @@
 """
 Xinru Yan
-Sep 2018
+Sept 2018
 
 Pull the top-n users's posts from a given subreddit
 Data location:
@@ -40,6 +40,7 @@ def main(subreddit, top_n):
 
     print('Pulling the following authors...')
     print('\n'.join(top_authors))
+    print(top_authors)
 
     # pull 1000 posts for each user each time
     pull_posts(1000, authors=top_authors)
