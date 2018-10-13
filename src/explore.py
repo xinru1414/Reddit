@@ -13,6 +13,7 @@ Usage:
 from reddit import Reddit
 import config
 import time
+import csv
 import click
 
 
@@ -23,18 +24,14 @@ def main():
     reddit = Reddit(config.data_location)
 
     for user in reddit.get_users():
-        with open(f'../tmp/{user.name}.txt', 'w') as fp:
-            count = 0
+        with open(f'../tmp/{user.name}.csv', 'w') as fp:
+            #csv_file = csv.writer(fp)
+            #count = 0
             for post in user.posts:
-                if 'title' in post and 'selftext' in post and post['selftext']:
-                    count += 1
-                    fp.write(post.get('subreddit') + '\n')
-                    fp.write(time.ctime(post['created_utc']) + '\n')
-                    fp.write(post.get('title') + '\n')
-                    fp.write(post.get('selftext').replace('\n', ' ') )
-                    fp.write('\n\n')
-            fp.write(str(count))
-
+                if 'selftext' in post and post['selftext'] and post['selftext'] != '[removed]':
+                    #csv_file.writerow([post.get('id'), time.ctime(post['created_utc']), post.get('subreddit'), post.get('selftext').replace('\n', ' ')])
+                    fp.write(post.get('selftext').replace('\n', ' '))
+                    fp.write('\n')
 
 if __name__ == '__main__':
     main()
