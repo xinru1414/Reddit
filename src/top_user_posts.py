@@ -6,15 +6,6 @@ Pull the top-n users's posts from a given subreddit
 Data location:
     ../data/users/
 
-File structure:
-    For each USER_NAME.txt file:
-        a list of:
-            subreddit
-            post_tile
-            post_selftext
-
-        posts_count
-
 Usage:
     To pull all posts of top-20 users from a given subreddit:
         python top_user_posts.py -s SUBR_NAME -n 20
