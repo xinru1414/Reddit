@@ -5,7 +5,7 @@ Sept 2018
 Pull the top-n users's posts from a given subreddit
 Data location:
     ../data/users/
-    
+
 
 Usage:
     To pull all posts of top-20 users from a given subreddit:
