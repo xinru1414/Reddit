@@ -17,6 +17,8 @@ Usage:
         python crawl_reddit.py -l 1000 -s SUBR_NAME
     TO collect posts by multiple subreddits:
         python craw_reddit.py -l 1000 -s SUBR_NAME -s SUBR_NAME
+    TO collect posts by multiple subreddits listed in a file:
+        python craw_reddit.py -l 1000 -S SUBR_LISTING_FILE
 """
 from psaw import PushshiftAPI
 import json
@@ -171,9 +173,18 @@ def pull_posts(limit, authors=None, subreddits=None, verbose=True):
 
 @click.command()
 @click.option('-l', '--limit', type=int, default=1000)
-@click.option('-a', '--author', 'authors', type=str, multiple=True)
-@click.option('-s', '--subreddit', 'subreddits', type=str, multiple=True)
-def main(limit, authors, subreddits):
+@click.option('-a', '--author', 'authors', type=str, multiple=True, default=[])
+@click.option('-s', '--subreddit', 'subreddits', type=str, multiple=True, default=[])
+@click.option('-S', '--subreddit-list', 'subreddit_list', type=click.File("r"))
+@click.option('-A', '--author-list', 'author_list', type=click.File("r"))
+def main(limit, authors, subreddits, author_list, subreddit_list):
+    import pdb; pdb.set_trace()
+    if author_list is not None:
+        authors = list(authors)
+        authors.extend([str(a).strip().split("/")[-1] for a in author_list])
+    if subreddit_list is not None:
+        subreddits = list(subreddits)
+        subreddits.extend([str(s).strip().split("/")[-1] for s in subreddit_list])
     pull_posts(limit, authors, subreddits, verbose=True)
 
 
