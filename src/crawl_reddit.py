@@ -178,13 +178,12 @@ def pull_posts(limit, authors=None, subreddits=None, verbose=True):
 @click.option('-S', '--subreddit-list', 'subreddit_list', type=click.File("r"))
 @click.option('-A', '--author-list', 'author_list', type=click.File("r"))
 def main(limit, authors, subreddits, author_list, subreddit_list):
-    import pdb; pdb.set_trace()
     if author_list is not None:
         authors = list(authors)
-        authors.extend([str(a).strip().split("/")[-1] for a in author_list])
+        authors.extend([str(a).strip().split("/")[-1] for a in author_list if a.strip() != ""])
     if subreddit_list is not None:
         subreddits = list(subreddits)
-        subreddits.extend([str(s).strip().split("/")[-1] for s in subreddit_list])
+        subreddits.extend([str(s).strip().split("/")[-1] for s in subreddit_list if s.strip() != ""])
     pull_posts(limit, authors, subreddits, verbose=True)
 
 
