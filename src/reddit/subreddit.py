@@ -1,5 +1,6 @@
 import json
 import os
+from collections import Counter
 
 from .post import Post
 
@@ -11,7 +12,20 @@ class Subreddit:
         self.path = os.path.join(self.db_root, 'subreddits', name+'.json')
 
     @property
-    def posts(self):
+    def post_ids(self):
         with open(self.path, 'r') as fp:
-            posts = json.load(fp)['posts']
-        return (Post.load_post(post_id, self.db_root) for post_id in posts)
+            return json.load(fp)['posts']
+
+    @property
+    def posts(self):
+        for post_id in self.post_ids:
+            yield Post.load_post(post_id, self.db_root) 
+
+    def post(self, post_id):
+        return Post.load_post(post_id, self.db_root) 
+
+    def top_authors(self, top_n):
+        users = Counter(post['author'] for post in self.posts)
+        del users['[deleted]']
+        return next(zip(*users.most_common(top_n)))
+

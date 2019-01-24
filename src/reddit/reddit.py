@@ -9,6 +9,11 @@ class Reddit:
     def __init__(self, db_root):
         self.db_root = db_root
 
+    def get_subreddits(self):
+        for subreddit_file in os.listdir(os.path.join(self.db_root, 'subreddits')):
+            name = subreddit_file.split(".")[0]
+            yield Subreddit(name, self.db_root)
+
     def get_subreddit(self, name):
         path = os.path.join(self.db_root, 'subreddits', name+'.json')
         if os.path.exists(path):
