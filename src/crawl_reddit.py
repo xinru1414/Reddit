@@ -142,7 +142,7 @@ def grab_more_posts(find_posts):
     posts = []
     newest_time = find_posts.start
 
-    for post in tqdm(find_posts()):
+    for post in find_posts():
         posts += [post.d_]
         if post.created_utc > newest_time:
             newest_time = post.created_utc
@@ -162,13 +162,13 @@ def pull_posts(limit, authors=None, subreddits=None, verbose=True):
         posts, newest_time = grab_more_posts(PostFinder(limit, start=data.get_newest_time(author=author), author=author))
         data.add_posts(posts, author=author)
         data.set_newest_time(newest_time, author=author)
-        print(f'Last post pulled for author "{author}" was posted on {time.ctime(newest_time)}')
+        print(f'Pulled {len(posts)} posts; last post pulled for author "{author}" was posted on {time.ctime(newest_time)}')
 
     for subreddit in subreddits:
         posts, newest_time = grab_more_posts(PostFinder(limit, start=data.get_newest_time(subreddit=subreddit), subreddit=subreddit))
         data.add_posts(posts, subreddit=subreddit)
         data.set_newest_time(newest_time, subreddit=subreddit)
-        print(f'Last post pulled for subreddit "{subreddit}" was posted on {time.ctime(newest_time)}')
+        print(f'Pulled {len(posts)} posts; last post pulled for subreddit "{subreddit}" was posted on {time.ctime(newest_time)}')
 
 
 @click.command()
