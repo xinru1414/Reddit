@@ -8,7 +8,7 @@ column in the user list will be ignored though;
 we count all postings by each unique user, across any of the forums in the forum list.
 
 Usage:
-   python user_posting_counts.py --subreddit-list forums.txt --user-list users.txt --output_file user_activity.csv
+   python user_posting_counts.py --subreddit-list forums.txt --user-list users.txt --output-file user_activity.csv
 """
 from reddit import Reddit
 import csv
@@ -28,22 +28,27 @@ def main(user_list, subreddit_list, output_file):
     reddit = Reddit(config.data_location)
     subreddits = {forum.strip().split("/")[-1] for forum in subreddit_list}
     users = {useritem.strip().split(",")[-1] for useritem in user_list}
-    subreddits -= set("")
+    try:
+        subreddits.remove("")
+    except: pass
     subreddits = sorted(subreddits)
-    users -= set("")
+    try:
+        users.remove("")
+    except: pass
     users = sorted(users)
     csvf = csv.writer(output_file)
     csvf.writerow(["username","month","subreddit","count"])
 
-    for user in users:
-        subcount = { s:defaultdict(int) for s in subreddits }
-        for post in reddit.get_user(user).posts:
-            if post.get("subreddit","") in subreddits:
+    for s in subreddits:
+        print(s)
+        subcount = defaultdict(lambda: defaultdict(int))  # author -> month -> count
+        for post in reddit.get_subreddit(s).posts:
+            if post.get("author","") in users:
                 utc = datetime.utcfromtimestamp(post["created_utc"]).strftime('%Y-%m')
-                subcount[post.get("subreddit","")][utc] += 1
-        for s in sorted(subcount):
-            for t in sorted(subcount[s]):
-                csvf.writerow([user,t,s,subcount[s][t]])
+                subcount[post.get("author","")][utc] += 1
+        for u in sorted(subcount):
+            for t in sorted(subcount[u]):
+                csvf.writerow([u,t,s,subcount[u][t]])
             
 if __name__ == '__main__':
     main()
