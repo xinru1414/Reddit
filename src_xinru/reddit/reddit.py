@@ -31,3 +31,6 @@ class Reddit:
     def get_posts(self):
         for post_file in os.listdir(os.path.join(self.db_root, 'posts')):
             yield Post.load_post(os.path.splitext(post_file)[0], self.db_root)
+
+    def get_post(self, id: str):
+        return Post.load_post(id, self.db_root)
