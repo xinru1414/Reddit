@@ -1,8 +1,10 @@
 import os
+from pathlib import Path
 
 from .post import Post
 from .subreddit import Subreddit
 from .user import User
+from .comment import Comment
 
 
 class Reddit:
@@ -34,3 +36,10 @@ class Reddit:
 
     def get_post(self, id: str):
         return Post.load_post(id, self.db_root)
+
+    def get_comment(self, id: str):
+        return Comment.load_comment(id, self.db_root)
+
+    def get_comments(self):
+        for comment_file in os.listdir(os.path.join(self.db_root, 'comments')):
+            yield Comment.load_comment(os.path.splitext(comment_file)[0], self.db_root)

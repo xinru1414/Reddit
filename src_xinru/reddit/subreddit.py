@@ -2,6 +2,7 @@ import json
 import os
 
 from .post import Post
+from .comment import Comment
 
 
 class Subreddit:
@@ -15,3 +16,9 @@ class Subreddit:
         with open(self.path, 'r') as fp:
             posts = json.load(fp)['posts']
         return (Post.load_post(post_id, self.db_root) for post_id in posts)
+
+    @property
+    def comments(self):
+        with open(self.path, 'r') as fp:
+            comments = json.load(fp)['comments']
+        return (Comment.load_comment(comment_id, self.db_root) for comment_id in comments)

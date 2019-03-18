@@ -37,11 +37,12 @@ def get_year_from_row(reddit, row):
     ts = date.fromtimestamp(timestamp)
     return ts.year
 
+
 def get_year_month_from_row(reddit, row):
     post_id = row['SeqId']
     timestamp = reddit.get_post(post_id)['created_utc']
     ts = date.fromtimestamp(timestamp)
-    return f'{ts.year}-{ts.month}'
+    return f'{ts.year}{ts.month}'
 
 
 def process_topic(topic):
@@ -60,7 +61,6 @@ def process_topic(topic):
     df = df[df['Author'].isin(full_authors)]
 
     df.to_csv(os.path.join(config.topic_dir, f'{topic}-filtered-with_year_and_month.csv'))
-
 
 
 with Pool() as pool:

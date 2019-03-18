@@ -25,6 +25,9 @@ class TOPICS(Enum):
     ALL = auto()
 
 
+time_unit_column = 'Year-Month'
+
+
 def au_to_texts(df):
     authors_to_texts = defaultdict(list)
 
@@ -32,7 +35,7 @@ def au_to_texts(df):
 
     for group, rows in tqdm(groups.items(), desc='   Dataset Au', leave=False):
         for row in groups[group]:
-            authors_to_texts[group] += [(df.iloc[row]['Text'], df.iloc[row]['Year'])]
+            authors_to_texts[group] += [(df.iloc[row]['Text'], df.iloc[row][time_unit_column])]
     return authors_to_texts
 
 
@@ -213,14 +216,13 @@ class TableCache(Cache):
 
 def main():
     topics = ['FT1', 'FT3', 'FT6','FT8']
-    years = ['2009','2010','2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018','2019']
-
+    years = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
+    months = [f'{year}{m+1}' for year in years for m in range(12)]
 
     dfs = {}
     for topic_name in tqdm(topics, desc='Creating dfs'):
-        topic_path = os.path.join(config.topic_dir, f'{topic_name}-filtered-with_year.csv')
+        topic_path = os.path.join(config.topic_dir, f'{topic_name}-filtered-with_year_and_month.csv')
         dfs[topic_name] = pd.read_csv(topic_path)
-
 
     dataset = DatasetCache('all').load(dfs)
 
@@ -237,11 +239,10 @@ def main():
 
     table = TableCache('all').load(dataset, full_authors)
 
-
-    mean_allt_5_dict = get_all_df_and_per_year(dfs.keys(), full_authors, years=years, table=table, selection_stat=SELECTION_STRAT.MEAN, num_of_pcs=5)
-    for year in years + ['all']:
-        with open(Path(f'/usr2/Reddit/data_local/mean_allt_2_{year}.npy'), 'wb') as fp:
-            np.save(fp, mean_allt_5_dict[year])
+    mean_allt_5_dict = get_all_df_and_per_year(dfs.keys(), full_authors, years=months, table=table, selection_stat=SELECTION_STRAT.MEAN, num_of_pcs=5)
+    for month in months + ['all']:
+        with open(Path(f'/usr2/Reddit/data_local/mean_allt_2_{month}.npy'), 'wb') as fp:
+            np.save(fp, mean_allt_5_dict[month])
 
 
 if __name__ == '__main__':

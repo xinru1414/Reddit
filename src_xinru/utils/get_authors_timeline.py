@@ -150,9 +150,16 @@ if __name__ == '__main__':
     l10 = ['RLM_', 'ChingShih', 'WhaTheWhy', 'allquixotic', 'unsoldmerchant', 'xrm67', 'zvra210', 'gnikivar2', 'ElectricRebel', 'zanaks']
     l11 = ['afrobat', 'jamessnow', 'villadsknudsen', 'Yuli-Ban', 'TheSov', 'terp_nolan', 'DonManuel', 'bikermonk', 'TheLegionsOfHell', 'fastj83']
 
-    l_all_0 = ['dmguion', 'calmblueocean', 'communityDOTsolar']
-    for item in l_all_0:
-        print(get_authors_timeline(item, ['FT1']))
+    l_all_0 = ['communityDOTsolar', 'dmguion', 'calmblueocean']
+    l_all_1 = ['BelovedLady', 'MayKingKar', 'HeartofAthena']
+    l_all_2 = ['ceramicfiver', 'shoptxelectricity', 'georedd']
+
+    l_all_state_0 = ['CommonEmployment', 'SevereAnxiety76', 'communityDOTsolar', 'forWatermen', 'kill_pussycat', 'l0ther', 'lawrencewidman', 'maryhadalittlelbomb', 'unsynched']
+    l_all_state_1 = ['HRGreen', 'ILikeNeurons']
+    l_all_state_2 = ['ceramicfiver', 'obsidian468']
+
+    for item in l_all_state_2:
+        print(get_authors_timeline(item, ['FT1', 'FT3', 'FT6', 'FT8']))
 
 
 

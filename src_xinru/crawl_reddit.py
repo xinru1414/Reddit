@@ -21,11 +21,8 @@ Usage:
 from psaw import PushshiftAPI
 import json
 import os
-# prograss bar
 from tqdm import tqdm
-# command line interface
 import click
-# import your own config file, see example_config.py
 import config
 import time
 
@@ -102,6 +99,23 @@ class Data:
         obj['posts'] += [post['id'] for post in posts]
         with open(path, 'w') as fp:
             json.dump(obj, fp)
+
+    def add_comments(self, post_id, comments):
+        # Save comments
+        for comment in comments:
+            path = os.path.join(self.root, 'comments', comment['id'] + '.json')
+            with open(path, 'w') as fp:
+                json.dump(comment, fp)
+
+        # update comments for posts dir
+        post_dir = os.path.join(self.root, 'comments_for_posts', post_id)
+        if not os.path.exists(post_dir):
+            os.mkdir(post_dir)
+
+        for comment in comments:
+            comment_path = os.path.join(post_dir, comment['id'])
+            if not os.path.exists(comment_path):
+                os.mkdir(comment_path)
 
 
 class PostFinder:
