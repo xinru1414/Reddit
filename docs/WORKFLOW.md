@@ -27,4 +27,4 @@
   * The export to Elasticsearch will be similar, but it may be better to have the script just grab an entire DiscourseDB database rather than a manual selection of records, so it can be automated and updated on a schedule. 
 ![](images/discoursedb-to-csm.svg)
 
-Note: the original diagrams can be edited here: [Google presentation document](https://docs.google.com/presentation/d/1PVBqB9JszFavSs7fRTzZDT2bMSakVAS9y4JjEq8TZrM/edit#slide=id.g5195033c36_0_91)
+Note: the original diagrams can be edited here: [Google presentation document](https://docs.google.com/presentation/d/1PVBqB9JszFavSs7fRTzZDT2bMSakVAS9y4JjEq8TZrM/edit#slide=id.g5195033c36_0_91) and exported to SVG. (The first diagram is too tall straight out of Presentations, so I edited the svg file to use 270 as a height instead of 540.)
