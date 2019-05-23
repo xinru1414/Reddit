@@ -3,6 +3,8 @@
   1. How data is scraped from reddit directly into Discoursedb without analysis
   2. How data is scraped from reddit, analyzed, piped through a *different* discoursedb database, into a visualization engine
   3. A *planned* pipeline that unifies these two, routing data through a single DiscourseDB database before analysis
+  
+  Notice that the finished parts are in *red* in the graphs, and unfinished parts are in *black*. For the unfinished parts, some of them need rewriting and for others we need to create from scratch
 
 ## Current scraping into text database
   * crawl_reddit.py (for pulling posts) is called periodically by a cron job, checking the Reddit API for new posts associated with a list of subreddits of interest.  It puts the JSON records it retrieves into a mongo database (in collection `posts`) and updates a latest retrieval date in collection `scrapedates` for each subreddit.
