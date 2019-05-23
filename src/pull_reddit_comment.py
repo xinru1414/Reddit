@@ -50,11 +50,11 @@ def grab_more_comments(find_comments):
     return comments
 
 
-def pull_comments(limit, post_ids=None):
+def pull_comments(limit, database, post_ids=None):
     if post_ids is None:
         post_ids = []
 
-    data = Data()
+    data = Data(database)
 
     for post in tqdm(post_ids):
         comments = grab_more_comments(CommentFinder(limit, post_id=post))
@@ -91,7 +91,7 @@ def main(limit, posts, posts_list, database):
         posts = list(posts)
         posts.extend([str(post).strip().split("/")[-1] for post in posts_list if post.strip() != ""])
     update_posts = compare(posts, database)
-    pull_comments(limit, update_posts)
+    pull_comments(limit, database, update_posts)
 
 
 if __name__ == '__main__':
