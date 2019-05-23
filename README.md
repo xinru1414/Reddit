@@ -2,7 +2,9 @@
 
 ## Overview
 
-This is a scraper for Reddit
+This is a Reddit data scraper and analyzer using Content Word Filtering and Speaker Preference Model (CSM)
+
+CSM detail see https://github.com/yohanjo/Dialogue-Acts
 
 ## How to access Reddit API
 
