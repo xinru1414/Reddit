@@ -2,6 +2,7 @@
 Xinru Yan
 Sep 2018
 
+
 This program collects reddit posts per user(author) or per subreddit
 Data location:
     ../data/posts
@@ -19,11 +20,8 @@ Usage:
         python craw_reddit.py -l 1000 -s SUBR_NAME -s SUBR_NAME
 """
 from psaw import PushshiftAPI
-import json
-import os
 from tqdm import tqdm
 import click
-import config
 import time
 from pymongo import MongoClient, ASCENDING, DESCENDING
 
@@ -31,10 +29,10 @@ from pymongo import MongoClient, ASCENDING, DESCENDING
 api = PushshiftAPI()
 
 
-class Data:
-    def __init__(self):
+class Data():
+    def __init__(self, db):
         self.mongoc = MongoClient("mongodb://127.0.0.1:27017")
-        self.db = self.mongoc["reddit-environmental"]
+        self.db = self.mongoc[db]
         self.scrapedates = self.db["scrapedates"]
         self.posts = self.db["posts"]
         self.comments = self.db["comments"]
@@ -123,13 +121,13 @@ def grab_more_posts(find_posts):
     return posts, newest_time
 
 
-def pull_posts(limit, authors=None, subreddits=None, verbose=True):
+def pull_posts(limit, database, authors=None, subreddits=None, verbose=True):
     if authors is None:
         authors = []
     if subreddits is None:
         subreddits = []
 
-    data = Data()
+    data = Data(database)
 
     for author in authors:
         posts, newest_time = grab_more_posts(PostFinder(limit, start=data.get_newest_time(author=author), author=author))
@@ -148,12 +146,13 @@ def pull_posts(limit, authors=None, subreddits=None, verbose=True):
 @click.option('-l', '--limit', type=int, default=1000)
 @click.option('-a', '--author', 'authors', type=str, multiple=True)
 @click.option('-s', '--subreddit', 'subreddits', type=str, multiple=True)
+@click.option('-d', '--database', 'database', type=str)
 @click.option('-S', '--subreddit-list', 'subreddit_list', type=click.File("r"))
-def main(limit, authors, subreddits, subreddit_list):
+def main(limit, authors, subreddits, subreddit_list, database):
     if subreddit_list is not None:
         subreddits = list(subreddits)
         subreddits.extend([str(s).strip().split("/")[-1] for s in subreddit_list if s.strip() != ""])
-    pull_posts(limit, authors, subreddits, verbose=True)
+    pull_posts(limit, database, authors, subreddits, verbose=True)
 
 
 if __name__ == '__main__':

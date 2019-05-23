@@ -73,7 +73,7 @@ def compare(posts, mongodb):
     mydb = myclient[mongodb]
     mycol = mydb["comments"]
     pulled_posts = []
-    for x in mycol.find({}, {"parent_id": 1, "_id": 0}):
+    for x in mycol.find({}, {"link_id": 1, "_id": 0}):
         for id in x:
             post_id = re.search(r'(?<=_)\w+', x[id]).group(0)
             pulled_posts.append(post_id)
