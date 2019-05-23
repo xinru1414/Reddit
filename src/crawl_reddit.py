@@ -11,13 +11,15 @@ Data location:
 
 Usage:
     To collect posts by one user:
-        python crawl_reddit.py -l 1000 -a USER_NAME
+        python crawl_reddit.py -l 1000 -a USER_NAME -d DB_NAME
     To collect posts by multiple users:
-        python crawl_reddit.py -l 1000 -a USER_NAME -a USERNAME
+        python crawl_reddit.py -l 1000 -a USER_NAME -a USERNAME -d DB_NAME
     To collect posts by subreddit:
-        python crawl_reddit.py -l 1000 -s SUBR_NAME
-    TO collect posts by multiple subreddits:
-        python craw_reddit.py -l 1000 -s SUBR_NAME -s SUBR_NAME
+        python crawl_reddit.py -l 1000 -s SUBR_NAME -d DB_NAME
+    To collect posts by multiple subreddits:
+        python craw_reddit.py -l 1000 -s SUBR_NAME -s SUBR_NAME -d DB_NAME
+    To collect posts by a list of subreddits:
+        python crawl_reddit.py -d DB_NAME -S FILE_NAME
 """
 from psaw import PushshiftAPI
 from tqdm import tqdm
