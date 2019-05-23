@@ -9,6 +9,8 @@ praw = "*"
 psaw = "*"
 tqdm = "*"
 pandas = "*"
+ipython = "*"
+pymongo = "*"
 
 [dev-packages]
 ipython = "*"

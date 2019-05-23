@@ -1,38 +1,35 @@
-import os
-
-from .post import Post
 from .subreddit import Subreddit
 from .user import User
 
 
 class Reddit:
-    def __init__(self, db_root):
-        self.db_root = db_root
+    def __init__(self, db):
+        self.db = db
 
     def get_subreddits(self):
-        for subreddit_file in os.listdir(os.path.join(self.db_root, 'subreddits')):
-            name = subreddit_file.split(".")[0]
-            yield Subreddit(name, self.db_root)
+        for rec in self.db.scrapedates.find({"subreddit": {"$exists": True}}):
+            yield rec["subreddit"]
 
     def get_subreddit(self, name):
-        path = os.path.join(self.db_root, 'subreddits', name+'.json')
-        if os.path.exists(path):
-            return Subreddit(name, self.db_root)
-        else:
-            raise ValueError(f"No subreddit '{name}' found because missing file '{os.path.abspath(path)}'")
-            # return None
+        try:
+            return Subreddit(name, self.db)
+        except:
+            raise ValueError(f"No subreddit '{name}' found because missing record in mongo reddit.scrapedate collection")
 
     def get_user(self, name):
-        path = os.path.join(self.db_root, 'users', name+'.json')
-        if os.path.exists(path):
-            return User(name, self.db_root)
-        else:
+        try:
+            return User(name, self.db)
+        except:
             return None
 
     def get_users(self):
-        for user_file in os.listdir(os.path.join(self.db_root, 'users')):
-            yield User(os.path.splitext(user_file)[0], self.db_root)
+        for rec in self.db.scrapedates.find({"author": {"$exists": True}}):
+            yield User(rec["author"], self.db)
 
     def get_posts(self):
-        for post_file in os.listdir(os.path.join(self.db_root, 'posts')):
-            yield Post.load_post(os.path.splitext(post_file)[0], self.db_root)
+        for rec in self.db.posts.find():
+            yield rec
+
+    def get_comments(self):
+        for rec in self.db.comments.find():
+            yield rec

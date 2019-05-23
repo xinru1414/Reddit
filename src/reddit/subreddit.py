@@ -1,31 +1,31 @@
-import json
-import os
-from collections import Counter
-
-from .post import Post
-
-
 class Subreddit:
-    def __init__(self, name, db_root):
+    def __init__(self, name, db):
         self.name = name
-        self.db_root = db_root
-        self.path = os.path.join(self.db_root, 'subreddits', name+'.json')
+        self.db = db
 
     @property
     def post_ids(self):
-        with open(self.path, 'r') as fp:
-            return json.load(fp)['posts']
+        for rec in self.db.posts.find({"subreddit": self.name}):
+            yield rec["id"]
 
     @property
     def posts(self):
-        for post_id in self.post_ids:
-            yield Post.load_post(post_id, self.db_root) 
+        for rec in self.db.posts.find({"subreddit": self.name}):
+            yield rec
+
+    @property
+    def comments(self):
+        for rec in self.db.comments.find({"subreddit": self.name}):
+            yield rec
 
     def post(self, post_id):
-        return Post.load_post(post_id, self.db_root) 
+        return self.db.posts.find_one({"id": post_id})
 
-    def top_authors(self, top_n):
-        users = Counter(post['author'] for post in self.posts)
-        del users['[deleted]']
-        return next(zip(*users.most_common(top_n)))
+    def comment(self, comment_id):
+        return self.db.comments.find_one({"id": comment_id})
+
+    # def top_authors(self, top_n):
+    #     users = Counter(post['author'] for post in self.posts)
+    #     del users['[deleted]']
+    #     return next(zip(*users.most_common(top_n)))
 

@@ -1,28 +1,25 @@
-import json
-import os
-
-from .post import Post
-
-
 class User:
-    def __init__(self, name, db_root):
+    def __init__(self, name, db):
         self.name = name
-        self.db_root = db_root
-        self.path = os.path.join(self.db_root, 'users', name+'.json')
+        self.db = db
 
     @property
     def post_ids(self):
-        with open(self.path, 'r') as fp:
-            return json.load(fp)['posts']
+        for rec in self.db.posts.find({"author": self.name}):
+            yield rec["id"]
 
     @property
     def posts(self):
-        with open(self.path, 'r') as fp:
-            posts = json.load(fp)['posts']
-        for post_id in posts:
-            yield Post.load_post(post_id, self.db_root) 
+        for rec in self.db.posts.find({"author": self.name}):
+            yield rec
+
+    @property
+    def comments(self):
+        for rec in self.db.comments.find({"author": self.name}):
+            yield rec
 
     def post(self, post_id):
-        return Post.load_post(post_id, self.db_root) 
+        return self.db.posts.find_one({"id": post_id})
 
-
+    def comment(self, comment_id):
+        return self.db.comments.find_one({"id": comment_id})
