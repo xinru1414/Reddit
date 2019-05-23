@@ -1,5 +1,6 @@
 from .subreddit import Subreddit
 from .user import User
+from .comment import Comment
 
 
 class Reddit:
@@ -33,3 +34,9 @@ class Reddit:
     def get_comments(self):
         for rec in self.db.comments.find():
             yield rec
+
+    def get_post(self, id: str):
+        return Post.load_post(id, self.db_root)
+
+    def get_comment(self, id: str):
+        return Comment.load_comment(id, self.db_root)

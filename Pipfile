@@ -11,6 +11,12 @@ tqdm = "*"
 pandas = "*"
 ipython = "*"
 pymongo = "*"
+nltk = "*"
+sklearn = "*"
+matplotlib = "*"
+yellowbrick = "*"
+scipy = "*"
+seaborn = "*"
 
 [dev-packages]
 ipython = "*"

@@ -2,8 +2,9 @@ data/
 .idea/
 trash/
 CSM/CSM-*
-src1/
-src2/
+src1/*
+src2/*
+src_xinru/*
 resources/post_ids_for_comments/*.txt
 resources/subreddit_groups/*.txt
 logs/*.txt

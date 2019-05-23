@@ -4,4 +4,4 @@ script.sh
 ../.ipynb_checkpoints
 ../CSM*
 ../data_local
-__pycache__/*
+__pycache__/crawl_reddit.cpython-37.pyc

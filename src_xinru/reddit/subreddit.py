@@ -28,4 +28,3 @@ class Subreddit:
     #     users = Counter(post['author'] for post in self.posts)
     #     del users['[deleted]']
     #     return next(zip(*users.most_common(top_n)))
-

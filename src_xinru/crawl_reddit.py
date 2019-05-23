@@ -78,6 +78,23 @@ class Data:
         for comment in comments:
             self.comments.replace_one({"id": comment["id"]}, comment, upsert=True)
 
+    def add_comments(self, post_id, comments):
+        # Save comments
+        for comment in comments:
+            path = os.path.join(self.root, 'comments', comment['id'] + '.json')
+            with open(path, 'w') as fp:
+                json.dump(comment, fp)
+
+        # update comments for posts dir
+        post_dir = os.path.join(self.root, 'comments_for_posts', post_id)
+        if not os.path.exists(post_dir):
+            os.mkdir(post_dir)
+
+        for comment in comments:
+            comment_path = os.path.join(post_dir, comment['id'])
+            if not os.path.exists(comment_path):
+                os.mkdir(comment_path)
+
 
 class PostFinder:
     def __init__(self, limit, start, author=None, subreddit=None):
