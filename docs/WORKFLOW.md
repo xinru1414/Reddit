@@ -3,16 +3,20 @@
   1. How data is scraped from reddit directly into Discoursedb without analysis
   2. How data is scraped from reddit, analyzed, piped through a *different* discoursedb database, into a visualization engine
   3. A *planned* pipeline that unifies these two, routing data through a single DiscourseDB database before analysis
+  
+  Notice that the finished parts are in *red* in the graphs, and unfinished parts are in *black*. For the unfinished parts, some of them need rewriting and for others we need to create from scratch
 
 ## Current scraping into text database
-  * crawl_reddit.py is called periodically by a cron job, checking the Reddit API for new posts associated with a list of subreddits of interest.  It puts the JSON records it retrieves into a mongo database (in collection `posts`) and updates a latest retrieval date in collection `scrapedates` for each subreddit.
+  * crawl_reddit.py (for pulling posts) is called periodically by a cron job, checking the Reddit API for new posts associated with a list of subreddits of interest.  It puts the JSON records it retrieves into a mongo database (in collection `posts`) and updates a latest retrieval date in collection `scrapedates` for each subreddit.
+  * grab_post_id.py and pull_reddit_comments.py (for pulling comments) *will be* handled in the same way. We have a mongo databse (in collection `comments`) for comments as well.
   * gen_discoursedb_csv.py is also called periodically; it extracts new mongo records and prepares [a CSV file needed for import into DiscourseDB](https://github.com/DiscourseDB/discoursedb-core/tree/master/discoursedb-io-csv).
   * Finally, a DiscourseDB script, [import_posts](https://github.com/DiscourseDB/discoursedb-core/blob/master/discoursedb-io-csv/import_posts_split), is called which imports that CSV file into discourseDB.
   * That data is available as unannotated text in [DiscourseDB](http://discoursedb.github.io) (currently in database EnviroReddit).
 ![](images/reddit-to-discoursedb.svg)
 
 ## Current scraping and analysis for visualization
-  * After crawl_reddit.py loads data into Mongo, *Fill in details please!*, resulting in preprocessed data stored *somewhere*
+  * we refer to crawl_reddit.py, grab_post_id.py and pull_reddit_comments.py as our *crawler*.
+  * After crawler loads data into Mongo, various scprits read data from mongo and preprocess the data, resulting in preprocessed data stored *somewhere*
   * Preprocessing is done, separating out sentences and removing punctuation
   * Analysis software called [CSM](https://github.com/yohanjo/Dialogue-Acts) is run.
   * The analyst manually creates topics.txt and schemas.txt files that identify the topics schemas encompass, and name the topics.
