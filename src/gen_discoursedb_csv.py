@@ -10,8 +10,6 @@ Usage:
 """
 import json
 import os
-# prograss bar
-from tqdm import tqdm
 # command line interface
 import click
 # import your own config file, see example_config.py
@@ -93,11 +91,12 @@ def posts2csv(post_f, authors=None, subreddits=None, seen_posts = set(), verbose
 @click.command()
 @click.option( '-l', '--limit', type=int, default=1000)
 @click.option( '-A', '--author-list', 'author_list', type=click.File("r"))
+@click.option( '-d', '--discoursedb-database', 'ddb_db', type=str)
 @click.option( '-S', '--subreddit-list', 'subreddit_list', type=click.File("r"))
 @click.option( '-o', '--posts-file', 'posts_file', type=click.File("w"))
-def main(author_list, subreddit_list, limit, posts_file):
+def main(author_list, subreddit_list, limit, posts_file, ddb_db):
     try:
-        seen_posts = set() #set(get_discoursedb_post_set("discoursedb_ext_EnviroRedditM"))
+        seen_posts = set(get_discoursedb_post_set("discoursedb_ext_" + ddb_db))
     except Exception as e:
         print(type(e), e)
         seen_posts = set()
