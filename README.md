@@ -2,15 +2,15 @@
 
 ## Overview
 
-This is a Reddit data scraper and analyzer using Content Word Filtering and Speaker Preference Model (CSM) https://github.com/yohanjo/Dialogue-Acts
+This is a Reddit data scraper and analyzer using [Content Word Filtering and Speaker Preference Model (CSM)](https://github.com/yohanjo/Dialogue-Acts)
 
-Data are stored using MongoDB and DiscourseDB http://discoursedb.github.io
+Data are stored using MongoDB and [DiscourseDB](http://discoursedb.github.io)
 
 Dependencies see *Pipfile*
 
 ## How to access Reddit API
 
-Please follow this link https://www.reddit.com/wiki/api
+Please click [here](https://www.reddit.com/wiki/api)
 
 ## docs
 
