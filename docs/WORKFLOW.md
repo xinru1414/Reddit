@@ -18,7 +18,7 @@ Fetch data from JSON files, run data analysis and store results as txt files.
 Transfer analysis results to DiscourseDB, fetch data from DiscourseDB and visualize it using elastic.
 
 ## Current Workflow
-![](images/old_workflow.svg)
+![](images/old_workflow.png)
  
 ## Proposed Infrastructure
 ### Data Crawler
@@ -31,5 +31,5 @@ Fetch data from DiscourseDB, run data analysis and plug results back into Discou
 Fetch data from DiscourseDB and visualize data using elastic.
 
 ## Proposed Workflow
-![](images/new_workflow.svg)
+![](images/new_workflow.png)
  
