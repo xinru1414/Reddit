@@ -9,7 +9,7 @@
 
 ## Current Infrastructure
 ### Data Crawler
-Crawl Reddit data (posts only) periodically and store them as JSON files.
+Crawl Reddit data (*posts only*) periodically and store them as JSON files.
 ### Data Transporter
 Transport data from JSON files into DiscourseDB.
 ### Data Analyzer
@@ -22,7 +22,7 @@ Transfer analysis results to DiscourseDB, visualize it using elastic and store v
  
 ## Proposed Infrastructure
 ### Data Crawler
-Crawl Reddit data (posts and comments) periodically and store them in MongoDB.
+Crawl Reddit data (*posts and comments*) periodically and store them in MongoDB.
 ### Data Transporter
 Transfer data from MongoDB to DiscourseDB.
 ### Data Analyzer
