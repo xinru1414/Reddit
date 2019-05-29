@@ -28,7 +28,7 @@ Transfer data from MongoDB to DiscourseDB.
 ### Data Analyzer
 Fetch data from DiscourseDB, run data analysis and plug results back into DiscourseDB.
 ### Data Visualizer
-Fetch data from DiscourseDB, visualize data using elastic.
+Fetch data from DiscourseDB and visualize data using elastic.
 
 ## Proposed Workflow
 ![](images/new_workflow.svg)
