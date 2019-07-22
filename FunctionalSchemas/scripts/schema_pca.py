@@ -2,10 +2,10 @@
 March 2019
 Xinru Yan
 
-This script extract a set of correlated foreground topics to form a schema
+This script extracts a set of correlated foreground topics (functional structures) to form a schema
 
 Usage:
-    python schema_pca.py -i /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/I1000-InstSentAssign.csv -d /usr2/qinlans/SCSM/data/movie/dev.tsv -o /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/FT-correlation.csv -tn 10 -pn 10
+    python schema_pca.py -i InstSentAssign_FILE -d DEV_FILE -o OUTPUT_FILE -tn 10 -pn 10
 '''
 import pandas as pd
 from collections import Counter
