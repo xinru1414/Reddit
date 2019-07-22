@@ -6,6 +6,8 @@ This is a Reddit data scraper and analyzer using [Content Word Filtering and Spe
 
 Data are stored using MongoDB and [DiscourseDB](http://discoursedb.github.io)
 
+Data and code related to paper **Using Functional Schemas to Understand Social Media Narratives** see *FunctionalSchemas* dir
+
 Dependencies see *Pipfile*
 
 ## How to access Reddit API
