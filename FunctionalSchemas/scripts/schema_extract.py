@@ -2,7 +2,13 @@
 April 2019
 Xinru Yan
 
-python schema_extract.py -i /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/FT1.csv -i /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/FT4.csv -o /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/movie_schema_14.csv
+This script extracts the schema sentences from each post. 
+Input files:
+    Each input file should be a CSV file representing 1 functional structure and all input files together should represent one schema
+Output file:
+    The output file is schema file
+Usage:
+    python schema_extract.py -i FS_1.csv -i FS_4.csv -o SCHEMA_14.csv
 '''
 import pandas as pd
 import click
