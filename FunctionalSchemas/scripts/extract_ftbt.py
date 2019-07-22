@@ -1,5 +1,10 @@
 '''
-python extract_ftbt.py -in_f /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/I1000-DThetaF.csv -in_g /usr2/qinlans/SCSM/data/movie.csv -in_b /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/I1000-InstAssign.csv -out /usr2/qinlans/SCSM/data/CSM-movie-S5-FT10-BT5-FA0.1-BA1.0-B0.001-SG1.0-AG0.1-E0.8-N0.9-SEQ/
+March 2019
+Xinru Yan
+
+This script extract FT and BT from CSM results
+Usage: 
+    python extract_ftbt.py -in_f INPUT_FT_FILE -in_g INPUT_GENERAL_FILE -in_b INPUT_BT_FILE -out OUTPUT
 '''
 import pandas as pd
 import click
