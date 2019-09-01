@@ -45,7 +45,7 @@ Log files in txt.
 CSM results
 
 ## Citation
-If you use this repo in your work, please cite
+If you find the pipeline useful in your research, please consider citing our paper:
 
 ```
 @inproceedings{yan-etal-2019-using,
