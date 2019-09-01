@@ -44,7 +44,7 @@ Log files in txt.
 
 CSM results
 
-## Cite
+## Citation
 If you use this repo in your work, please cite
 
 ```
