@@ -44,6 +44,24 @@ Log files in txt.
 
 CSM results
 
+## Cite
+If you use this repo in your work, please cite
+
+```
+@inproceedings{yan-etal-2019-using,
+    title = "Using Functional Schemas to Understand Social Media Narratives",
+    author = "Yan, Xinru and Naik, Aakanksha and Jo, Yohan and Rose, Carolyn",
+    booktitle = "Proceedings of the Second Workshop on Storytelling",
+    month = aug,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/W19-3403",
+    pages = "22--33",
+    abstract = "We propose a novel take on understanding narratives in social media, focusing on learning {''}functional story schemas{''}, which consist of sets of stereotypical functional structures. We develop an unsupervised pipeline to extract schemas and apply our method to Reddit posts to detect schematic structures that are characteristic of different subreddits. We validate our schemas through human interpretation and evaluate their utility via a text classification task. Our experiments show that extracted schemas capture distinctive structural patterns in different subreddits, improving classification performance of several models by 2.4{\%} on average. We also observe that these schemas serve as lenses that reveal community norms.",
+}
+```
+
 ## Copyright and License
 
 Copyright (C) 2018, Xinru Yan
