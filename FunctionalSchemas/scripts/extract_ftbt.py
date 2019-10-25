@@ -5,6 +5,12 @@ Xinru Yan
 This script extract FT and BT from CSM results
 Usage: 
     python extract_ftbt.py -in_f INPUT_FT_FILE -in_g INPUT_GENERAL_FILE -in_b INPUT_BT_FILE -out OUTPUT
+
+Inputs and Outputs:
+    INPUT_FT_FILE is the I1000-DThetaF.csv file from the CSM model results
+    INPUT_GENERAL_FILE is the input file that feeds into CSM
+    INPUT_BT_FILE is the I1000-InstAssign.csv file from the CSM model results
+    OUTPUT is the dir that contains the set of FT files and BT files generated from the script
 '''
 import pandas as pd
 import click
