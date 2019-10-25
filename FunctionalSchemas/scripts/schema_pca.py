@@ -6,6 +6,12 @@ This script extracts a set of correlated foreground topics (functional structure
 
 Usage:
     python schema_pca.py -i InstSentAssign_FILE -d DEV_FILE -o OUTPUT_FILE -tn 10 -pn 10
+
+Inputs and Outputs:
+    InstSentAssign_FILE is the I1000-InstSentAssign.csv file from CSM model
+    DEV_FILE is the development file formated in a tab seperated CSV file with header containing three fields i.e. SeqId, Text and Author
+    OUTPUT_FILE is the FT correlation file that contains the PCA information
+    tn is the number of foreground topics existing in the data, pn is the number of principle components 
 '''
 import pandas as pd
 from collections import Counter
